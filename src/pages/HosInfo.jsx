@@ -60,7 +60,6 @@ export default function HosInfo() {
           ))}
         </ul>
       </main>
-
       <Footer />
     </div>
   );
