@@ -5,6 +5,7 @@ import "./HosInfo.css";
 export default function HosInfo() {
   const [location, setLocation] = useState(null);
   const [hospitals, setHospitals] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -21,55 +22,63 @@ export default function HosInfo() {
   useEffect(() => {
     if (location) {
       const fetchHospitals = async () => {
+        setIsLoading(true);
         const serviceKey = "ZHKI97SA-ZHKI-ZHKI-ZHKI-ZHKI97SAYP";
-        const url = `https://safemap.go.kr/openApiService/data/getGenralHospitalData.do?serviceKey=${serviceKey}&pageNo=1&numOfRows=500&dataType=XML&DutyDiv=A`;
+        const dutyDivs = ["A", "B", "C", "D", "E"];
+        const allResults = [];
 
         try {
-          const res = await fetch(url);
-          let text = await res.text();
-          // Sanitize unescaped ampersands
-          text = text.replace(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;)/g, "&amp;");
-          const parser = new window.DOMParser();
-          const xmlDoc = parser.parseFromString(text, "application/xml");
-          const items = xmlDoc.getElementsByTagName("item");
-
-          const result = [];
-
-          for (let i = 0; i < items.length; i++) {
-            const item = items[i];
-            const name = item.getElementsByTagName("DUTYNAME")[0]?.textContent;
-            const address =
-              item.getElementsByTagName("DUTYADDR")[0]?.textContent;
-            const phone = item.getElementsByTagName("DUTYTEL1")[0]?.textContent;
-            const lat = parseFloat(
-              item.getElementsByTagName("LAT")[0]?.textContent
+          for (const div of dutyDivs) {
+            const url = `https://safemap.go.kr/openApiService/data/getGenralHospitalData.do?serviceKey=${serviceKey}&pageNo=1&numOfRows=500&dataType=XML&DutyDiv=${div}`;
+            const res = await fetch(url);
+            let text = await res.text();
+            text = text.replace(
+              /&(?!amp;|lt;|gt;|quot;|apos;|#\d+;)/g,
+              "&amp;"
             );
-            const lon = parseFloat(
-              item.getElementsByTagName("LON")[0]?.textContent
-            );
+            const parser = new window.DOMParser();
+            const xmlDoc = parser.parseFromString(text, "application/xml");
+            const items = xmlDoc.getElementsByTagName("item");
 
-            if (!lat || !lon) continue;
+            for (let i = 0; i < items.length; i++) {
+              const item = items[i];
+              const name =
+                item.getElementsByTagName("DUTYNAME")[0]?.textContent;
+              const address =
+                item.getElementsByTagName("DUTYADDR")[0]?.textContent;
+              const phone =
+                item.getElementsByTagName("DUTYTEL1")[0]?.textContent;
+              const lat = parseFloat(
+                item.getElementsByTagName("LAT")[0]?.textContent
+              );
+              const lon = parseFloat(
+                item.getElementsByTagName("LON")[0]?.textContent
+              );
 
-            const toRad = (v) => (v * Math.PI) / 180;
-            const R = 6371;
-            const dLat = toRad(lat - location.latitude);
-            const dLon = toRad(lon - location.longitude);
-            const a =
-              Math.sin(dLat / 2) ** 2 +
-              Math.cos(toRad(location.latitude)) *
-                Math.cos(toRad(lat)) *
-                Math.sin(dLon / 2) ** 2;
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            const distance = R * c;
+              if (!lat || !lon) continue;
 
-            if (distance <= 5) {
-              result.push({ name, address, phone });
+              const toRad = (v) => (v * Math.PI) / 180;
+              const R = 6371;
+              const dLat = toRad(lat - location.latitude);
+              const dLon = toRad(lon - location.longitude);
+              const a =
+                Math.sin(dLat / 2) ** 2 +
+                Math.cos(toRad(location.latitude)) *
+                  Math.cos(toRad(lat)) *
+                  Math.sin(dLon / 2) ** 2;
+              const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+              const distance = R * c;
+
+              if (distance <= 5) {
+                allResults.push({ name, address, phone });
+              }
             }
           }
-
-          setHospitals(result);
+          setHospitals(allResults);
         } catch (err) {
-          console.error("종합병원 데이터 불러오기 실패:", err);
+          console.error("병원 데이터 불러오기 실패:", err);
+        } finally {
+          setIsLoading(false);
         }
       };
 
@@ -84,7 +93,7 @@ export default function HosInfo() {
       </header>
 
       <main className="hosinfo-main">
-        {!location ? (
+        {!location || isLoading ? (
           <p className="hosinfo-loading">위치 정보를 불러오는 중...</p>
         ) : hospitals.length === 0 ? (
           <p className="hosinfo-no-result">인근에 병원이 없습니다.</p>
@@ -104,7 +113,9 @@ export default function HosInfo() {
           </ul>
         )}
       </main>
-      <Footer />
+      <div className="hosinfo-footer">
+        <Footer />
+      </div>
     </div>
   );
 }

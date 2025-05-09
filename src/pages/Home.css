@@ -3,27 +3,27 @@
   --text-color: #333;
   --label-color: #666;
   --complete-color: #28a745;
-  --footer-height: 100px;
+  --footer-height: 12vh; /* ✅ 모바일에 맞게 비율 기반 */
 }
 
 .home-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* ✅ 전체 화면 높이 */
+  height: 100vh;
   background-color: #fff;
-  overflow: hidden; /* ✅ 스크롤 방지 */
+  overflow: hidden;
   overflow-x: hidden;
 }
 
 .home-header {
   background-color: var(--primary-color);
-  padding: 40px;
+  padding: 8vw;
   text-align: center;
   color: white;
 }
 
 .home-logo {
-  font-size: 50px;
+  font-size: 3rem;
   font-weight: bold;
   margin: 0;
 }
@@ -34,19 +34,20 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 5vw;
+  padding: 4vw;
 }
 
 .mic-button {
-  font-size: 100px;
+  font-size: 6vw;
   background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 250px;
-  height: 250px;
+  width: 60vw;
+  height: 60vw;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1vw 3vw rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease;
   display: flex;
   align-items: center;
@@ -58,7 +59,7 @@
 }
 
 .mic-label {
-  font-size: 35px;
+  font-size: 1.8rem;
   color: #333;
   text-align: center;
   line-height: 1.6;
@@ -73,16 +74,17 @@
   height: var(--footer-height);
   border-top: 1px solid #ddd;
   background-color: #f9f9f9;
+  padding: 2vw 0;
 }
 
 .footer-btn {
   background: none;
   border: none;
-  font-size: 40px;
+  font-size: 2.2rem;
   color: #333;
   cursor: pointer;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 2vw 4vw;
+  border-radius: 1rem;
   transition: background-color 0.3s;
 }
 
@@ -102,7 +104,7 @@
     box-shadow: 0 0 0 0 rgba(255, 111, 97, 0.7);
   }
   70% {
-    box-shadow: 0 0 0 16px rgba(255, 111, 97, 0);
+    box-shadow: 0 0 0 5vw rgba(255, 111, 97, 0);
   }
   100% {
     box-shadow: 0 0 0 0 rgba(255, 111, 97, 0);
@@ -110,8 +112,8 @@
 }
 
 .mic-image {
-  width: 200px;
-  height: 200px;
+  width: 50vw;
+  height: 50vw;
   object-fit: contain;
   display: block;
   margin: auto;
@@ -125,30 +127,17 @@
   justify-content: center;
   flex: 1;
   overflow: hidden;
+  padding: 4vw;
 }
 
 .spinner-with-image {
   position: relative;
-  width: 250px;
-  height: 250px;
+  width: 60vw;
+  height: 60vw;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden; /* Prevent overflow */
-}
-
-.spinner-circle {
-  width: 240px;
-  height: 240px;
-  border: 10px solid #ffe7e2;
-  border-top: 10px solid var(--primary-color);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  z-index: 0;
-  box-sizing: border-box; /* Ensure border is counted within size */
+  overflow: hidden;
 }
 
 @keyframes spin {
@@ -166,10 +155,107 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-4vw);
   }
 }
 
 .thinking-animation {
   animation: thinkingBounce 1.2s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-text span {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+  display: inline-block;
+}
+
+.modal-text {
+  max-height: 60vh; /* 원하는 최대 높이로 조정 가능 */
+  overflow-y: auto;
+  padding-right: 1rem; /* 스크롤바와 글자 겹침 방지 */
+  line-height: 1.6;
+}
+
+.modal-hospital-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  font-size: 1.8rem;
+  line-height: 1.8;
+  color: #222;
+}
+
+.modal-hospital-title {
+  font-size: 2.4rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.modal-hospital-item {
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid lightgray;
+}
+
+.modal-hospital-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.modal-hospital-address,
+.modal-hospital-phone,
+.modal-hospital-time {
+  font-size: 1.6rem;
+  color: #555;
+  margin-bottom: 0.6rem;
+}
+
+.modal-hospital-phone a {
+  font-weight: bold;
+  color: #007acc;
+  text-decoration: none;
+}
+
+.modal-hospital-phone a:hover {
+  text-decoration: underline;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.modal-button {
+  background-color: #ff6f61;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding: 1.2rem 2.4rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-button:hover {
+  background-color: #e5574e;
 }
