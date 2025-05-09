@@ -8,7 +8,7 @@
 .hosinfo-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* ✅ min-height → height 로 변경 */
+  height: 100dvh; /* ✅ min-height → height 로 변경 */
   background-color: #fff;
   color: var(--text-color);
 }

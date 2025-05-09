@@ -9,7 +9,7 @@
 .home-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100dvh;
   background-color: #fff;
   overflow: hidden;
   overflow-x: hidden;
@@ -34,7 +34,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5vw;
+  overflow: auto;
   padding: 4vw;
 }
 
