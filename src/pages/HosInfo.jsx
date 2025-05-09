@@ -5,6 +5,7 @@ import "./HosInfo.css";
 export default function HosInfo() {
   const [location, setLocation] = useState(null);
   const [hospitals, setHospitals] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // ✅ 추가
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -21,13 +22,13 @@ export default function HosInfo() {
   useEffect(() => {
     if (location) {
       const fetchHospitals = async () => {
+        setIsLoading(true); // ✅ 병원 정보 로딩 시작
         const serviceKey = "ZHKI97SA-ZHKI-ZHKI-ZHKI-ZHKI97SAYP";
         const url = `https://safemap.go.kr/openApiService/data/getGenralHospitalData.do?serviceKey=${serviceKey}&pageNo=1&numOfRows=500&dataType=XML&DutyDiv=A`;
 
         try {
           const res = await fetch(url);
           let text = await res.text();
-          // Sanitize unescaped ampersands
           text = text.replace(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;)/g, "&amp;");
           const parser = new window.DOMParser();
           const xmlDoc = parser.parseFromString(text, "application/xml");
@@ -70,6 +71,8 @@ export default function HosInfo() {
           setHospitals(result);
         } catch (err) {
           console.error("종합병원 데이터 불러오기 실패:", err);
+        } finally {
+          setIsLoading(false); // ✅ 병원 정보 로딩 완료
         }
       };
 
@@ -84,7 +87,7 @@ export default function HosInfo() {
       </header>
 
       <main className="hosinfo-main">
-        {!location ? (
+        {!location || isLoading ? (
           <p className="hosinfo-loading">위치 정보를 불러오는 중...</p>
         ) : hospitals.length === 0 ? (
           <p className="hosinfo-no-result">인근에 병원이 없습니다.</p>
