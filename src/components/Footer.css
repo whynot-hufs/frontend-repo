@@ -1,0 +1,25 @@
+.home-footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: var(--footer-height);
+  border-top: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.footer-btn {
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: #333;
+  cursor: pointer;
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.footer-btn.active {
+  background-color: #ffe7e2;
+  color: var(--primary-color);
+  font-weight: bold;
+}

@@ -1,0 +1,147 @@
+:root {
+  --primary-color: #ff6f61;
+  --text-color: #333;
+  --label-color: #666;
+  --complete-color: #28a745;
+}
+
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 전체 화면 높이 기준 */
+  background-color: var(--primary-color); /* 배경색 선택적으로 추가 */
+}
+
+.form-card {
+  max-width: 420px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.form-title {
+  font-size: 40px;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.styled-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  color: var(--label-color);
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 25px;
+}
+
+.form-group input {
+  padding: 14px;
+  font-size: 25px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.form-group input:focus {
+  border-color: var(--primary-color);
+  background-color: #fff5f3;
+  outline: none;
+}
+
+.form-group.complete input {
+  border-color: var(--complete-color);
+  background-color: #e6fff0;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%2328a745" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+}
+
+.form-button {
+  padding: 16px;
+  font-size: 30px;
+  font-weight: bold;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+  background-color: #e85b4f;
+}
+
+.completion-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: fadeInUp 0.6s ease-out;
+  text-align: center;
+}
+
+.check-icon {
+  font-size: 60px;
+}
+
+.completion-message {
+  font-size: 25px;
+  color: var(--text-color);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+}
+
+.spinner {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid var(--primary-color);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
