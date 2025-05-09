@@ -1,0 +1,56 @@
+.onboard-container {
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    #f26d5b,
+    #f4937b
+  ); /* 코랄 톤 그라디언트 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.onboard-overlay {
+  text-align: center;
+  color: white;
+  width: 100%;
+  padding: 0 32px;
+}
+
+.onboard-logo {
+  width: 450px;
+  margin-bottom: 40px;
+}
+
+.onboard-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.onboard-btn-outline {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 16px;
+  font-size: 30px;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.onboard-btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.onboard-btn-filled {
+  background-color: white;
+  color: #ff6f61;
+  padding: 16px;
+  font-size: 30px;
+  border-radius: 32px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
