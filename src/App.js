@@ -3,7 +3,7 @@ import Signup from "./pages/Signup";
 import Onboard from "./pages/Onboard";
 import Home from "./pages/Home";
 import HosInfo from "./pages/HosInfo";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 
 export default function App() {
   return (
