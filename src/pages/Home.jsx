@@ -52,7 +52,7 @@ export default function Home() {
           try {
             setIsLoading(true);
             const response = await fetch(
-              "http://52.78.70.45:8000/api/pronun/ask-question?use_correction=true",
+              "/api/pronun/ask-question?use_correction=true",
               {
                 method: "POST",
                 body: formData,
@@ -143,7 +143,7 @@ export default function Home() {
           <div>
             {audioUrl && (
               <audio
-                src={`http://52.78.70.45:8000${audioUrl}`}
+                src={audioUrl}
                 autoPlay
                 controls
                 style={{ width: "100%" }}
