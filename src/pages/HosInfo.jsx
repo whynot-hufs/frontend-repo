@@ -20,19 +20,60 @@ export default function HosInfo() {
 
   useEffect(() => {
     if (location) {
-      const dummy = [
-        {
-          name: "세브란스 병원",
-          address: "서울시 서대문구 연세로 50",
-          phone: "02-2228-5800",
-        },
-        {
-          name: "서울대병원",
-          address: "서울시 종로구 대학로 101",
-          phone: "02-2072-2114",
-        },
-      ];
-      setHospitals(dummy);
+      const fetchHospitals = async () => {
+        const serviceKey = "ZHKI97SA-ZHKI-ZHKI-ZHKI-ZHKI97SAYP";
+        const url = `https://safemap.go.kr/openApiService/data/getGenralHospitalData.do?serviceKey=${serviceKey}&pageNo=1&numOfRows=500&dataType=XML&DutyDiv=A`;
+
+        try {
+          const res = await fetch(url);
+          let text = await res.text();
+          // Sanitize unescaped ampersands
+          text = text.replace(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;)/g, "&amp;");
+          const parser = new window.DOMParser();
+          const xmlDoc = parser.parseFromString(text, "application/xml");
+          const items = xmlDoc.getElementsByTagName("item");
+
+          const result = [];
+
+          for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            const name = item.getElementsByTagName("DUTYNAME")[0]?.textContent;
+            const address =
+              item.getElementsByTagName("DUTYADDR")[0]?.textContent;
+            const phone = item.getElementsByTagName("DUTYTEL1")[0]?.textContent;
+            const lat = parseFloat(
+              item.getElementsByTagName("LAT")[0]?.textContent
+            );
+            const lon = parseFloat(
+              item.getElementsByTagName("LON")[0]?.textContent
+            );
+
+            if (!lat || !lon) continue;
+
+            const toRad = (v) => (v * Math.PI) / 180;
+            const R = 6371;
+            const dLat = toRad(lat - location.latitude);
+            const dLon = toRad(lon - location.longitude);
+            const a =
+              Math.sin(dLat / 2) ** 2 +
+              Math.cos(toRad(location.latitude)) *
+                Math.cos(toRad(lat)) *
+                Math.sin(dLon / 2) ** 2;
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c;
+
+            if (distance <= 5) {
+              result.push({ name, address, phone });
+            }
+          }
+
+          setHospitals(result);
+        } catch (err) {
+          console.error("종합병원 데이터 불러오기 실패:", err);
+        }
+      };
+
+      fetchHospitals();
     }
   }, [location]);
 
@@ -43,22 +84,25 @@ export default function HosInfo() {
       </header>
 
       <main className="hosinfo-main">
-        {!location && (
+        {!location ? (
           <p className="hosinfo-loading">위치 정보를 불러오는 중...</p>
+        ) : hospitals.length === 0 ? (
+          <p className="hosinfo-no-result">인근에 병원이 없습니다.</p>
+        ) : (
+          <ul className="hosinfo-list">
+            {hospitals.map((hos, idx) => (
+              <li key={idx} className="hosinfo-item">
+                <strong className="hosinfo-name">{hos.name}</strong>
+                <p className="hosinfo-address">{hos.address}</p>
+                <p className="hosinfo-phone">
+                  <a href={`tel:${hos.phone}`} className="hosinfo-phone-link">
+                    {hos.phone}
+                  </a>
+                </p>
+              </li>
+            ))}
+          </ul>
         )}
-        <ul className="hosinfo-list">
-          {hospitals.map((hos, idx) => (
-            <li key={idx} className="hosinfo-item">
-              <strong className="hosinfo-name">{hos.name}</strong>
-              <p className="hosinfo-address">{hos.address}</p>
-              <p className="hosinfo-phone">
-                <a href={`tel:${hos.phone}`} className="hosinfo-phone-link">
-                  {hos.phone}
-                </a>
-              </p>
-            </li>
-          ))}
-        </ul>
       </main>
       <Footer />
     </div>
