@@ -8,7 +8,7 @@
 .hosinfo-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh; /* ✅ min-height → height 로 변경 */
   background-color: #fff;
   color: var(--text-color);
 }
@@ -18,6 +18,7 @@
   padding: 8vw 4vw;
   text-align: center;
   color: white;
+  flex-shrink: 0;
 }
 
 .hosinfo-title {
@@ -29,6 +30,8 @@
 .hosinfo-main {
   flex: 1;
   padding: 6vw 4vw;
+  overflow-y: auto; /* ✅ 리스트 스크롤 가능 */
+  box-sizing: border-box;
 }
 
 .hosinfo-loading {
@@ -80,4 +83,9 @@
   color: #666;
   text-align: center;
   margin-top: 10vh;
+}
+
+.hosinfo-footer {
+  height: var(--footer-height);
+  flex-shrink: 0;
 }

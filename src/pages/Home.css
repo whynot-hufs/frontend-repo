@@ -162,3 +162,100 @@
 .thinking-animation {
   animation: thinkingBounce 1.2s ease-in-out infinite;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-text span {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+  display: inline-block;
+}
+
+.modal-text {
+  max-height: 60vh; /* 원하는 최대 높이로 조정 가능 */
+  overflow-y: auto;
+  padding-right: 1rem; /* 스크롤바와 글자 겹침 방지 */
+  line-height: 1.6;
+}
+
+.modal-hospital-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  font-size: 1.8rem;
+  line-height: 1.8;
+  color: #222;
+}
+
+.modal-hospital-title {
+  font-size: 2.4rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.modal-hospital-item {
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid lightgray;
+}
+
+.modal-hospital-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.modal-hospital-address,
+.modal-hospital-phone,
+.modal-hospital-time {
+  font-size: 1.6rem;
+  color: #555;
+  margin-bottom: 0.6rem;
+}
+
+.modal-hospital-phone a {
+  font-weight: bold;
+  color: #007acc;
+  text-decoration: none;
+}
+
+.modal-hospital-phone a:hover {
+  text-decoration: underline;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.modal-button {
+  background-color: #ff6f61;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding: 1.2rem 2.4rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-button:hover {
+  background-color: #e5574e;
+}
