@@ -9,9 +9,6 @@ export default function Modal({ children, onClose }) {
         onClick={(e) => e.stopPropagation()} // 배경 클릭 시 닫힘 방지
       >
         {children}
-        <button className="modal-close" onClick={onClose}>
-          닫기
-        </button>
       </div>
     </div>
   );
