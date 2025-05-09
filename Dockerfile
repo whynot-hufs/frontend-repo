@@ -7,14 +7,17 @@ WORKDIR /app
 # 의존성 파일 복사
 COPY package.json package-lock.json* ./
 
-# 의존성 설치
-RUN npm ci
+# 의존성 설치 (해커톤 환경이므로 개발 의존성도 포함하여 설치)
+RUN npm install
 
 # 소스 코드 복사
 COPY . .
 
-# 서비스 포트 설정 (React의 기본 개발 서버 포트)
+# React 기본 포트 노출
 EXPOSE 3000
+
+# 컨테이너 내부에서 외부 접근이 가능하도록 호스트 설정
+ENV HOST=0.0.0.0
 
 # npm start로 애플리케이션 실행
 CMD ["npm", "start"]
