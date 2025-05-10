@@ -1,23 +1,24 @@
-# 베이스 이미지로 Node.js 20 사용
-FROM node:20-alpine
-
+# 빌드 단계
+FROM node:20-alpine as build
 # 작업 디렉토리 설정
 WORKDIR /app
-
 # 의존성 파일 복사
 COPY package.json package-lock.json* ./
-
-# 의존성 설치 (해커톤 환경이므로 개발 의존성도 포함하여 설치)
+# 의존성 설치
 RUN npm install
-
 # 소스 코드 복사
 COPY . .
+# 프로덕션 빌드 실행
+RUN npm run build
 
-# React 기본 포트 노출
-EXPOSE 3000
-
-# 컨테이너 내부에서 외부 접근이 가능하도록 호스트 설정
-ENV HOST=0.0.0.0
-
-# npm start로 애플리케이션 실행
-CMD ["npm", "start"]
+# 실행 단계 - 간단한 정적 파일 서버 사용
+FROM node:20-alpine
+WORKDIR /app
+# 빌드 단계에서 생성된 빌드 폴더 복사
+COPY --from=build /app/build ./build
+# serve 패키지 전역 설치
+RUN npm install -g serve
+# 포트 80 노출
+EXPOSE 80
+# serve를 사용하여 정적 파일 제공 (포트 80)
+CMD ["serve", "-s", "build", "-l", "80"]`
